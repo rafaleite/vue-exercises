@@ -45,25 +45,63 @@
           @leave-cancelled="leaveCancelled" >
           <div style="width:300px; height: 100px; background-color: lightgreen" v-if="load"></div>
         </transition>
-
+        <br><br>
+        <select v-model="selectedComponent" class="form-control">
+          <option value="danger-alert">Danger</option>
+          <option value="success-alert">Success</option>
+        </select>
+        <br>
+        <transition enter-active-class="animated fadeIn faster" leave-active-class="animated fadeOut faster" appear mode="out-in">
+          <component :is="selectedComponent"></component>
+        </transition>
+        <hr>
+        <button class="btn btn-primary" @click="addItem">New item</button>
+        <br><br>
+        <ul class="list-group">
+          <transition-group name="slide">
+            <li class="list-group-item"
+                v-for="(number, index) in numbers"
+                :key="number"
+                @click="removeItem(index)"
+                style="cursor: pointer"> {{number}} </li>
+          </transition-group>
+        </ul>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import DangerAlert from './components/DangerAlert.vue'
+import SuccessAlert from './components/SuccessAlert'
+
 export default {
   data() {
     return {
       show: false,
-      load: true,
+      load: false,
       alertAnimation: 'fade',
-      elementWidth: 100
+      elementWidth: 100,
+      selectedComponent: 'danger-alert',
+      numbers: [1,2,3,4,5]
     }
-  }, methods: {
+  },
+  components: {
+    DangerAlert,
+    SuccessAlert
+  },
+  methods: {
+    addItem() {
+      const pos = Math.floor(Math.random * this.numbers.length)
+      this.numbers.splice(pos,0,this.numbers.length+1)
+    },
+    removeItem(idx) {
+      console.log(idx)
+      this.numbers.splice(idx,1)
+    },
     beforeEnter(el) {
       console.log('beforeEnter')
-      el.style.width = 100 + 'px'
+      el.style.width = this.elementWidth + 'px'
     },
     enter(el, done) {
       console.log('enter')
@@ -105,8 +143,6 @@ export default {
     leaveCancelled(el) {
       console.log('leaveCancelled')
     }
-
-
   }
 
 }
@@ -146,8 +182,13 @@ export default {
 
 .slide-leave-active {
   animation: slide-out 1s ease-out forwards;
-  transition: opacity 3s;
+  transition: opacity .5s;
   opacity: 0;
+  position: relative;
+}
+
+.slide-move {
+  transition: transform 1s;
 }
 
 @keyframes slide-in {

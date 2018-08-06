@@ -23,6 +23,11 @@ const router = new VueRouter({
   }
 })
 
+router.beforeEach((to, from, next) => {
+  console.log('Before each')
+  next()
+})
+
 Vue.use(VueResource)
 
 /* eslint-disable no-new */

@@ -2,7 +2,7 @@
     <div>
         <h3>Some User Details - ID: {{id}} </h3>
         <hr>
-        <router-link 
+        <router-link
             tag="button"
             class="btn btn-primary"
             :to="link">Edit</router-link>
@@ -10,15 +10,22 @@
 </template>
 
 <script>
-    export default {
-        props: ['id'],
-        data() {
-            return {
-                link: { name: 'userEdit', 
-                        params: { id: this.id }, 
-                        query: { locale: 'en' },
-                        hash: '#data'}
-            }
+  export default {
+    props: ['id'],
+    data() {
+        return {
+            link: { name: 'userEdit',
+                    params: { id: this.id },
+                    query: { locale: 'en' },
+                    hash: '#data'}
         }
+    },
+    beforeRouteEnter (to, from, next) {
+      if(true) {
+        next()
+      } else {
+        next(false)
+      }
     }
+  }
 </script>

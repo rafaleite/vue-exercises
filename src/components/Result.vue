@@ -1,13 +1,19 @@
 <template>
-    <p>Counter is: {{ $store.state.counter }}</p>
+  <div>
+    <p>Counter is: {{ counter }}</p>
+    <p>Double is {{doubleValue}} </p>
+  </div>
+  
 </template>
 
 <script>
-    export default {
-      computed: {
-        counter() {
-          return this.$store.state.counter
-        }
-      }
-    }
+import {mapGetters} from 'vuex'
+export default {
+  computed: {
+    ...mapGetters({
+      counter: 'stringCounter',
+      doubleValue: 'doubleCounter'
+    })
+  }
+}
 </script>
